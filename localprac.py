@@ -25,7 +25,7 @@ def create_stock_json(ticker):
 	if r.text[1:14]!='"dataset_data':
 		print "yeah ydude error"
 		return False
-	f=open('john.json','w')
+	f=open('miguel.json','w')
 	f.write(r.text)
 	f.close()
 	return True
