@@ -1,7 +1,7 @@
-from flask import Flask
 import localprac
-app_lulu = Flask(__name__)
 from flask import Flask, render_template, request, redirect
+app = Flask(__name__)
+
 import requests
 import simplejson as json
 from pandas import *
@@ -12,17 +12,33 @@ from bokeh.resources import CDN
 from bokeh.embed import file_html,components
 from datetime import date,datetime
 
-@app_lulu.route('/hello_page_lulu')
-def hello_world_lulu():
-    # this is a comment, just like in Python
-    # note that the function name and the route argument
-    # do not need to be the same.
-    ticker='TGT'
-    localprac.create_stock_json(ticker)
-    localprac.create_bokeh_script(ticker)
-    return localprac.generate_html(ticker)
+thevars={}
+
+@app.route('/show_stocks',methods=['GET','POST'])
+def show_stocks():
+		arbnum=96
+		if request.method == 'GET':
+				return render_template('index.html',num=19) #looks for file in the template folde, returns html.
+		else:
+				#ticker=request.form['ticker']
+				ticker=request.form['ticker']
+				#ticker=localprac.get_ticker()
+				if localprac.create_stock_json(ticker):
+					localprac.create_bokeh_script(ticker)
+					return localprac.generate_html(ticker)
+				else:
+					return '''<html>Bad ticker, call a cardiologist.</html'''
+		return(ticker)
+
+@app.route('/',methods=['GET'])
+def index():
+		arbnum=96
+		if request.method == 'GET':
+				return render_template('index.html',num=arbnum) #looks for file in the template folde, returns html.
+		else:
+				return 'request.method was not a GET!'
+		
 
 if __name__ == '__main__':
-    app_lulu.run(debug=True)
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(debug=True)
+    app.run(host='127.0.0.1', port=5000)

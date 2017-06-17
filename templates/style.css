@@ -1,0 +1,18 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+	background-image: url(bg.JPG);
+	text-align: center;
+}
+.style1 {color: #cccccc
+}
+a:link{
+	color: #FF3E9E
+}
+
+a:visited{color: #FF3E9E}
+a:hover{background-color:#ff3e9e; color:#FFFF0D}
+body,td,th {
+	font-family: "Courier New", Courier, monospace;
+}

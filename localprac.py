@@ -13,18 +13,22 @@ import sys
 def get_ticker():
 	#quandl api key : xtA72oRe4ZL-CZRfuMuU
 	#Get Ticker and pull dat and write it into the JSON
-	ticker = raw_input("Please enter ticker!!! ")
-	#ticker="MSFT"
+	#ticker = raw_input("Please enter ticker!!! ")
+	ticker="MSFT"
 	#curl "https://www.quandl.com/api/v3/datasets/WIKI/FB/data.json?api_key=YOURAPIKEY"
 	return ticker
 
 def create_stock_json(ticker):
 	request='https://www.quandl.com/api/v3/datasets/WIKI/'+ticker+'/data.json?api_key=xtA72oRe4ZL-CZRfuMuU'
 	r=requests.get(request)
+	print r.text[1:14]
+	if r.text[1:14]!='"dataset_data':
+		print "yeah ydude error"
+		return False
 	f=open('john.json','w')
 	f.write(r.text)
 	f.close()
-	return
+	return True
 def create_bokeh_script(ticker):
 	df=read_json('john.json')
 	data=df.dataset_data['data']
@@ -37,7 +41,7 @@ def create_bokeh_script(ticker):
 	p.line(stox['Date'], stox['Close'], color='navy', alpha=0.5)
 	#output_file("template/graph.html")
 
-	show(p)
+#	show(p)
 	script,div=components(p)
 
 	s=open('templates/script.html','w')
@@ -55,6 +59,8 @@ def generate_html(ticker):
 	html='''<!doctype html>
 	<html lang="en">
 		<head>
+		<title="Let's get financial.">
+		<link rel=stylesheet type=text/css href='static/style.css'>
 			<meta charset="utf-8">
 			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
@@ -66,7 +72,26 @@ def generate_html(ticker):
 			<script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.6.min.js"></script>
 		</head>
 		<body>
-			<div>
+		<div class=page>
+  <h1>Gimmme.</h1>
+  <div class=metanav>
+
+    <h4>
+      We want a stock ticker.
+    </h4>
+
+    <form id='symbol' method='POST' action='show_stocks' >
+      <p>
+    Symbol: <input type='text' name='ticker' />
+      </p>
+      <p>
+    <input type='submit' value='Select' />
+      </p>
+    </form>
+
+  </div>
+</div>
+			<div align='right'>
 			</div>'''+div+'''
 		</body>
 	</html>'''
