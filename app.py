@@ -20,14 +20,8 @@ def show_stocks():
 		if request.method == 'GET':
 				return render_template('index.html',num=19) #looks for file in the template folde, returns html.
 		else:
-				#ticker=request.form['ticker']
 				ticker=request.form['ticker']
-				#ticker=localprac.get_ticker()
-				if localprac.create_stock_json(ticker):
-					localprac.create_bokeh_script(ticker)
-					return localprac.generate_html(ticker)
-				else:
-					return '''<html>Bad ticker, call a cardiologist.</html'''
+				return localprac.generate_html(ticker)
 		return(ticker)
 
 @app.route('/',methods=['GET'])
@@ -40,5 +34,7 @@ def index():
 		
 
 if __name__ == '__main__':
-    #app.run(debug=True)
+    app.run(debug=True)
     app.run(host='whispering-fortress-85064.herokuapp.com', port=5000)
+    #app.run(host='127.0.0.1', port=5000)
+    

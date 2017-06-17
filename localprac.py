@@ -6,9 +6,11 @@ import numpy as np
 import bokeh
 from bokeh.plotting import figure, show, output_file
 from bokeh.resources import CDN
+from bokeh.palettes import Category10
 from bokeh.embed import file_html,components
 from datetime import date,datetime
 import sys
+import re
 
 def get_ticker():
 	#quandl api key : xtA72oRe4ZL-CZRfuMuU
@@ -18,44 +20,48 @@ def get_ticker():
 	#curl "https://www.quandl.com/api/v3/datasets/WIKI/FB/data.json?api_key=YOURAPIKEY"
 	return ticker
 
-def create_stock_json(ticker):
+def good_ticker(ticker):
 	request='https://www.quandl.com/api/v3/datasets/WIKI/'+ticker+'/data.json?api_key=xtA72oRe4ZL-CZRfuMuU'
 	r=requests.get(request)
-	print r.text[1:14]
 	if r.text[1:14]!='"dataset_data':
-		print "yeah ydude error"
 		return False
-	f=open('miguel.json','w')
-	f.write(r.text)
-	f.close()
-	print "We got to line 31"
 	return True
+
 def create_bokeh_script(ticker):
-	df=read_json('https://www.quandl.com/api/v3/datasets/WIKI/'+ticker+'/data.json?api_key=xtA72oRe4ZL-CZRfuMuU')
-	print "got to line 35"
-	data=df.dataset_data['data']
-	cols=df.dataset_data['column_names']
-	stox=DataFrame(data=data,columns=cols)
-	stox['Date']=to_datetime(stox['Date'],infer_datetime_format=True,format='%Y%m%d%f') #change eveyrthing from regualr object to datetime
+	print ticker + " is the ticker we got sent."
+	ticker=ticker.replace(' ','')
+	print ticker+ " is ticker"
+
+	ticker_list=ticker.split(',')
+	errors=""
 	p = figure(width=800, height=250, x_axis_type="datetime", title=ticker + " Price Over Time")
-	p.line(stox['Date'], stox['Close'], color='navy', alpha=0.5)
-	#output_file("template/graph.html")
+	total_stocks=len(ticker_list)
+	
+	if total_stocks>2:
+		color_list=Category10[total_stocks]
+	else:
+		color_list=['blue','red']
+	t=0
 
-#	show(p)
+	for oneticker in ticker_list:
+		if good_ticker(oneticker):
+			print oneticker
+			df=read_json('https://www.quandl.com/api/v3/datasets/WIKI/'+oneticker+'/data.json?api_key=xtA72oRe4ZL-CZRfuMuU')
+			data=df.dataset_data['data']
+			cols=df.dataset_data['column_names']
+			stox=DataFrame(data=data,columns=cols)
+			stox['Date']=to_datetime(stox['Date'],infer_datetime_format=True,format='%Y%m%d%f') #change eveyrthing from regualr object to datetime
+			#p = figure(width=800, height=250, x_axis_type="datetime", title=ticker + " Price Over Time")
+			p.line(stox['Date'], stox['Close'], alpha=0.5,legend=oneticker, line_color=color_list[t])
+		else:
+			errors+=oneticker + ' was a bad ticker.  Call a cardiologist.<br />'
+		t+=1
+	#p.line(colors='Set1')
 	script,div=components(p)
-	# s=open('templates/script.html','w')
-	# s.write(script)
-	# s.close()
-	# d=open('templates/div.html','w')
-	# d.write(div)
-	# d.close()
-
-
-	return script,div
+	return script,div,errors
 
 def generate_html(ticker):
-	script,div=create_bokeh_script(ticker)
-	div+="b"
+	script,div,errors=create_bokeh_script(ticker)
 	html='''<!doctype html>
 	<html lang="en">
 		<head>
@@ -93,14 +99,9 @@ def generate_html(ticker):
 </div>
 			<div align='right'>
 			</div>'''+div+'''
+			<div>'''+errors+'''</div>
 		</body>
 	</html>'''
 
 	return html
-
-#ticker=get_ticker()
-
-#ticker='MSFT'
-#generate_html(ticker)
-#create_stock_json(ticker)
 
