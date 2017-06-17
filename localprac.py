@@ -83,7 +83,7 @@ def generate_html(ticker):
   <div class=metanav>
 
     <h4>
-      We want a stock ticker.
+      Enter up to 10 stocks, with commas.
     </h4>
 
     <form id='symbol' method='POST' action='show_stocks' >
