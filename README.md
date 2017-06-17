@@ -1,13 +1,6 @@
 # Flask on Heroku
 
-This project is intended to help you tie together some important concepts and
-technologies from the 12-day course, including Git, Flask, JSON, Pandas,
-Requests, Heroku, and Bokeh for visualization.
-
-The repository contains a basic template for a Flask configuration that will
-work on Heroku.
-
-A [finished example](https://lemurian.herokuapp.com) that demonstrates some basic functionality.
+This project was supposed to learn me on heroku, bokeh, pandas, flask, and git.  it pretty much did!  definitely some things are done in a suboptimal way, but hopefully that'll get fixed soon enough.
 
 ## Step 1: Setup and deploy
 - Git clone the existing template repository.
