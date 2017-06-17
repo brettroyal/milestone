@@ -20,7 +20,7 @@ A [finished example](https://lemurian.herokuapp.com) that demonstrates some basi
   If you choose not to, put all requirements into `requirements.txt`
 
   `heroku config:add BUILDPACK_URL=https://github.com/kennethreitz/conda-buildpack.git`
-- *Question*: What are the pros and cons of using conda vs. pip?
+- *Question*: What are the pros and cons of using conda vs. pip?-- IDFK!!!
 - Deploy to Heroku: `git push heroku master`
 - You should be able to see your site at `https://<app_name>.herokuapp.com`
 - A useful reference is the Heroku [quickstart guide](https://devcenter.heroku.com/articles/getting-started-with-python-o).
