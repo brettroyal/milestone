@@ -12,7 +12,6 @@ from bokeh.plotting import figure, show, output_file
 from bokeh.resources import CDN
 from bokeh.embed import file_html,components
 from datetime import date,datetime
-import sys
 
 @app_lulu.route('/hello_page_lulu')
 def hello_world_lulu():
