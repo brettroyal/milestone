@@ -37,7 +37,7 @@ def create_bokeh_script(ticker):
 	cols=df.dataset_data['column_names']
 	stox=DataFrame(data=data,columns=cols)
 	stox['Date']=to_datetime(stox['Date'],infer_datetime_format=True,format='%Y%m%d%f') #change eveyrthing from regualr object to datetime
-
+	print stox
 
 	p = figure(width=800, height=250, x_axis_type="datetime", title=ticker + " Price Over Time")
 	p.line(stox['Date'], stox['Close'], color='navy', alpha=0.5)
