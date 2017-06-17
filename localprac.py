@@ -37,27 +37,25 @@ def create_bokeh_script(ticker):
 	cols=df.dataset_data['column_names']
 	stox=DataFrame(data=data,columns=cols)
 	stox['Date']=to_datetime(stox['Date'],infer_datetime_format=True,format='%Y%m%d%f') #change eveyrthing from regualr object to datetime
-	print stox
-
 	p = figure(width=800, height=250, x_axis_type="datetime", title=ticker + " Price Over Time")
 	p.line(stox['Date'], stox['Close'], color='navy', alpha=0.5)
 	#output_file("template/graph.html")
 
 #	show(p)
 	script,div=components(p)
-
-	s=open('templates/script.html','w')
-	s.write(script)
-	s.close()
-	d=open('templates/div.html','w')
-	d.write(div)
-	d.close()
+	# s=open('templates/script.html','w')
+	# s.write(script)
+	# s.close()
+	# d=open('templates/div.html','w')
+	# d.write(div)
+	# d.close()
 
 
 	return script,div
 
 def generate_html(ticker):
 	script,div=create_bokeh_script(ticker)
+	div+="b"
 	html='''<!doctype html>
 	<html lang="en">
 		<head>
@@ -68,10 +66,10 @@ def generate_html(ticker):
 			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 			'''+script+'''
-			<link href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.6.min.css" rel="stylesheet" type="text/css">
-			<link href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.6.min.css" rel="stylesheet" type="text/css">
-			<script src="http://cdn.pydata.org/bokeh/release/bokeh-0.12.6.min.js"></script>
-			<script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.6.min.js"></script>
+			<link href="https://cdn.pydata.org/bokeh/release/bokeh-0.12.6.min.css" rel="stylesheet" type="text/css">
+			<link href="https://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.6.min.css" rel="stylesheet" type="text/css">
+			<script src="https://cdn.pydata.org/bokeh/release/bokeh-0.12.6.min.js"></script>
+			<script src="https://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.6.min.js"></script>
 		</head>
 		<body>
 		<div class=page>
