@@ -6,7 +6,6 @@ import requests
 import simplejson as json
 from pandas import *
 import numpy as np
-import matplotlib.pyplot as plt
 import bokeh
 from bokeh.plotting import figure, show, output_file
 from bokeh.resources import CDN
