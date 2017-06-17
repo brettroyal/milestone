@@ -28,9 +28,11 @@ def create_stock_json(ticker):
 	f=open('miguel.json','w')
 	f.write(r.text)
 	f.close()
+	print "We got to line 31"
 	return True
 def create_bokeh_script(ticker):
-	df=read_json('john.json')
+	df=read_json('https://www.quandl.com/api/v3/datasets/WIKI/'+ticker+'/data.json?api_key=xtA72oRe4ZL-CZRfuMuU')
+	print "got to line 35"
 	data=df.dataset_data['data']
 	cols=df.dataset_data['column_names']
 	stox=DataFrame(data=data,columns=cols)
